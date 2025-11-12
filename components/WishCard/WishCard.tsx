@@ -1,8 +1,8 @@
+"use client";
 import { Heart, Trash2, Edit2, Star, ExternalLink, CheckCircle2, MessageCircle } from 'lucide-react';
-import { Card, CardContent } from './ui/card';
-import { Button } from './ui/button';
-import { ImageWithFallback } from './figma/ImageWithFallback';
-import { Badge } from './ui/badge';
+import { Card, CardContent } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
 import { useState } from 'react';
 import {
   Dialog,
@@ -10,8 +10,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from './ui/dialog';
-import { Textarea } from './ui/textarea';
+} from '../ui/dialog';
+import { Textarea } from '../ui/textarea';
 
 export interface Wish {
   id: string;
@@ -68,11 +68,6 @@ export function WishCard({
       <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group bg-white/80 backdrop-blur-sm border-green-100">
         {/* Image Section - Large and Prominent */}
         <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-green-50 to-amber-50">
-          <ImageWithFallback
-            src={wish.imageUrl}
-            alt={wish.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
           
           {/* Overlay Controls */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

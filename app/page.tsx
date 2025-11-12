@@ -33,13 +33,13 @@ const LandingPage = () => {
             <div className="flex items-center gap-3">
               <Button
                 variant="outline"
-                onClick={() => router.push("/login")}
+                onClick={() => router.push("/wishlist")}
                 className="hidden sm:inline-flex bg-transparent border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition-all"
               >
                 Log in
               </Button>
               <Button
-                onClick={() => router.push("/login")}
+                onClick={() => router.push("/wishlist")}
                 className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white"
               >
                 Sign up
@@ -71,7 +71,7 @@ const LandingPage = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
                   size="lg"
-                  onClick={() => router.push("/login")}
+                  onClick={() => router.push("/wishlist")}
                   className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
                 >
                   Get started free

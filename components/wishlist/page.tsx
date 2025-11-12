@@ -10,12 +10,12 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import { WishCard, Wish } from "@/components/WishCard";
-import { AddWishDialog } from "@/components/AddWishDialog";
-import { FilterBar, FilterOptions } from "@/components/FilterBar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { WishCard, Wish } from "../WishCard/WishCard";
+import { AddWishDialog } from "../AddWishDialog";
+import { FilterBar, FilterOptions } from '@components/FilterBar'
+import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
+import { Separator } from '@components/ui/separator';
 
 const categories = ["Sport", "Hobby", "Clothes", "Electronics", "Books", "Travel"];
 
