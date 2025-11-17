@@ -82,7 +82,9 @@ export function AddWishDialog({
           <span className="sr-only">Add Wish</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[525px]">
+
+      {/* Responsive Dialog Content */}
+      <DialogContent className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Add New Wish</DialogTitle>
@@ -90,7 +92,9 @@ export function AddWishDialog({
               Add a new item to your wishlist. Fill in the details below.
             </DialogDescription>
           </DialogHeader>
+
           <div className="grid gap-4 py-4">
+            {/* Title */}
             <div className="grid gap-2">
               <Label htmlFor="title">Title</Label>
               <Input
@@ -101,6 +105,8 @@ export function AddWishDialog({
                 required
               />
             </div>
+
+            {/* Description */}
             <div className="grid gap-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
@@ -111,6 +117,8 @@ export function AddWishDialog({
                 rows={3}
               />
             </div>
+
+            {/* Category */}
             <div className="grid gap-2">
               <Label htmlFor="category">Category</Label>
               <Select value={category} onValueChange={setCategory}>
@@ -126,6 +134,8 @@ export function AddWishDialog({
                 </SelectContent>
               </Select>
             </div>
+
+            {/* Priority */}
             <div className="grid gap-2">
               <Label htmlFor="priority">Priority</Label>
               <Select
@@ -144,6 +154,8 @@ export function AddWishDialog({
                 </SelectContent>
               </Select>
             </div>
+
+            {/* Price */}
             <div className="grid gap-2">
               <Label htmlFor="price">Price (kr) (optional)</Label>
               <Input
@@ -156,6 +168,8 @@ export function AddWishDialog({
                 placeholder="e.g., 500"
               />
             </div>
+
+            {/* Image URL */}
             <div className="grid gap-2">
               <Label htmlFor="imageUrl">Image URL (optional)</Label>
               <Input
@@ -166,6 +180,8 @@ export function AddWishDialog({
                 placeholder="https://example.com/image.jpg"
               />
             </div>
+
+            {/* Product Link */}
             <div className="grid gap-2">
               <Label htmlFor="link">Product Link (optional)</Label>
               <Input
@@ -176,6 +192,8 @@ export function AddWishDialog({
                 placeholder="https://store.com/product"
               />
             </div>
+
+            {/* Comments / Notes */}
             <div className="grid gap-2">
               <Label htmlFor="comments">Notes (optional)</Label>
               <Textarea
@@ -187,8 +205,11 @@ export function AddWishDialog({
               />
             </div>
           </div>
+
           <DialogFooter>
-            <Button type="submit" className="bg-gradient-to-r from-green-600 to-green-700">Add Wish</Button>
+            <Button type="submit" className="bg-gradient-to-r from-green-600 to-green-700">
+              Add Wish
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
