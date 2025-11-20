@@ -77,7 +77,7 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="gap-2 border-green-200 hover:bg-green-50 hover:border-green-300"
+              className="gap-2 border-green-200 hover:bg-green-50 hover:border-green-300 cursor-pointer"
             >
               <SlidersHorizontal className="w-4 h-4" />
               Filters
@@ -89,7 +89,7 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
           <PopoverContent className="w-80" align="end">
             <div className="space-y-4">
               <div>
-                <h4 className="mb-3">Priority</h4>
+                <h4 className="mb-3 font-medium">Priority</h4>
                 <div className="space-y-2">
                   {(['high', 'medium', 'low'] as const).map((priority) => (
                     <div key={priority} className="flex items-center space-x-2">
@@ -97,6 +97,7 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
                         id={`priority-${priority}`}
                         checked={filters.priorities.includes(priority)}
                         onCheckedChange={() => handlePriorityToggle(priority)}
+                        className="cursor-pointer data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
                       />
                       <Label
                         htmlFor={`priority-${priority}`}
@@ -110,15 +111,17 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
               </div>
 
               <div>
-                <h4 className="mb-3">
+                <h4 className="mb-3 font-medium">
                   Price Range: {filters.priceRange[0]} - {filters.priceRange[1]} kr
                 </h4>
+                {/* Her ændres farven på slideren */}
                 <Slider
                   min={0}
                   max={maxPrice}
                   step={50}
                   value={filters.priceRange}
                   onValueChange={handlePriceChange}
+                  className="cursor-pointer [&_.bg-primary]:bg-green-600 [&_[role=slider]]:border-green-600 [&_[role=slider]]:focus:ring-green-300"
                 />
               </div>
 
@@ -127,6 +130,7 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
                   id="favorites-only"
                   checked={filters.favoritesOnly}
                   onCheckedChange={handleFavoritesChange}
+                  className="cursor-pointer data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
                 />
                 <Label htmlFor="favorites-only" className="cursor-pointer">
                   Favorites only
@@ -142,7 +146,7 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
             variant="ghost"
             size="icon"
             onClick={handleClearFilters}
-            className="shrink-0"
+            className="shrink-0 cursor-pointer hover:bg-green-50 hover:text-green-700"
           >
             <X className="w-4 h-4" />
           </Button>
