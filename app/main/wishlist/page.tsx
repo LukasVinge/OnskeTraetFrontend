@@ -281,9 +281,8 @@ export default function WishlistPage() {
                         whileTap={{ scale: 0.98 }}
                       >
                         <Card
-                          className={`cursor-pointer transition-all duration-200 overflow-hidden h-full ${
-                            isSelected ? "ring-2 ring-green-500 shadow-lg" : "hover:shadow-md"
-                          } ${stats.count === 0 ? "opacity-50" : ""}`}
+                          className={`cursor-pointer transition-all duration-200 overflow-hidden h-full ${isSelected ? "ring-2 ring-green-500 shadow-lg" : "hover:shadow-md"
+                            } ${stats.count === 0 ? "opacity-50" : ""}`}
                           onClick={() =>
                             setSelectedCategories(
                               isSelected
