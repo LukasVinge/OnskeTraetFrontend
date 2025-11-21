@@ -9,7 +9,6 @@ import {
   Palette,
   Shirt,
   Smartphone,
-  BookOpen,
   Plane,
   MoreHorizontal,
 } from "lucide-react";
@@ -28,7 +27,6 @@ const categories = [
   { name: "Hobby", icon: Palette, color: "from-purple-500 to-pink-500" },
   { name: "Clothes", icon: Shirt, color: "from-rose-500 to-orange-500" },
   { name: "Electronics", icon: Smartphone, color: "from-indigo-500 to-blue-500" },
-  { name: "Books", icon: BookOpen, color: "from-amber-500 to-yellow-500" },
   { name: "Travel", icon: Plane, color: "from-green-500 to-emerald-500" },
   { name: "Other", icon: MoreHorizontal, color: "from-gray-500 to-slate-500" },
 ];
@@ -101,9 +99,7 @@ export default function WishlistPage() {
     }));
   }, [maxPrice]);
 
-  const handleAddWish = (
-    newWish: Omit<Wish, "id" | "isFavorite" | "isReserved">
-  ) => {
+  const handleAddWish = (newWish: Omit<Wish, "id" | "isFavorite" | "isReserved">) => {
     const tempId = crypto.randomUUID();
 
     setWishes((prev) => [
@@ -196,11 +192,6 @@ export default function WishlistPage() {
     return wishes.filter((w) => {
       if (selectedCategories.length && !selectedCategories.includes(w.category))
         return false;
-      if (filters.search) {
-        const search = filters.search.toLowerCase();
-        if (!w.title.toLowerCase().includes(search) && !w.description.toLowerCase().includes(search))
-          return false;
-      }
       if (filters.priorities.length > 0 && !filters.priorities.includes(w.priority))
         return false;
       const price = w.price || 0;
@@ -221,7 +212,6 @@ export default function WishlistPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-amber-50 to-rose-50">
-      {/* Global style fix for transparent popovers */}
       <style jsx global>{`
         [data-radix-popper-content-wrapper] > div,
         .bg-popover {
@@ -230,7 +220,6 @@ export default function WishlistPage() {
       `}</style>
 
       <Toaster richColors position="top-center" />
-      
       <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
 
       <div className="container mx-auto px-4 py-8">
@@ -249,7 +238,9 @@ export default function WishlistPage() {
                       My Wishlist
                     </h1>
                   </div>
-                  <p className="text-gray-600">Keep track of all the things you wish for and share with loved ones</p>
+                  <p className="text-gray-600">
+                    Keep track of all the things you wish for and share with loved ones
+                  </p>
                 </div>
 
                 <Button
@@ -262,7 +253,7 @@ export default function WishlistPage() {
                 </Button>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 mb-8">
+              <div className="flex flex-wrap items-center gap-3 mb-6">
                 <Badge className="gap-1 bg-gradient-to-r from-green-600 to-green-700 text-white border-none px-4 py-2">
                   <Star className="w-3 h-3" fill="currentColor" />
                   {favoriteCount} Favorites
@@ -270,6 +261,11 @@ export default function WishlistPage() {
                 <Badge variant="secondary" className="bg-white/80 border-green-200 px-4 py-2">
                   {wishes.length} Total Wishes
                 </Badge>
+
+                {/* FILTER BUTTON MOVED HERE */}
+                <div className="[&_button]:cursor-pointer [&_div[role=button]]:cursor-pointer ml-auto">
+                  <FilterBar filters={filters} onFiltersChange={setFilters} maxPrice={maxPrice} />
+                </div>
               </div>
 
               <div className="mb-8">
@@ -314,11 +310,6 @@ export default function WishlistPage() {
                 </div>
               </div>
 
-              {/* Wrapped FilterBar to enforce cursors on buttons inside */}
-              <div className="[&_button]:cursor-pointer [&_div[role=button]]:cursor-pointer">
-                <FilterBar filters={filters} onFiltersChange={setFilters} maxPrice={maxPrice} />
-              </div>
-
               <div className="mt-8">
                 <AnimatePresence mode="wait">
                   {filteredWishes.length > 0 ? (
@@ -334,12 +325,12 @@ export default function WishlistPage() {
                       }
                     >
                       {filteredWishes.map((wish, i) => (
-                        <motion.div 
-                            key={wish.id} 
-                            initial={{ opacity: 0, y: 20 }} 
-                            animate={{ opacity: 1, y: 0 }} 
-                            transition={{ delay: i * 0.05 }}
-                            className="cursor-pointer" // Added cursor pointer here
+                        <motion.div
+                          key={wish.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.05 }}
+                          className="cursor-pointer"
                         >
                           <WishCard
                             wish={wish}
@@ -357,7 +348,6 @@ export default function WishlistPage() {
                 </AnimatePresence>
               </div>
 
-              {/* Added cursor-pointer to the dialog wrapper */}
               <div className="fixed bottom-8 right-8 z-50 cursor-pointer [&_button]:cursor-pointer">
                 <AddWishDialog
                   onAddWish={handleAddWish as any}
