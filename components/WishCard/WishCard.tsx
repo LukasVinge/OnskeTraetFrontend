@@ -19,13 +19,13 @@ export interface Wish {
   description: string;
   category: string;
   imageUrl: string;
-  priority: 'low' | 'medium' | 'high';
+  priority: "low" | "medium" | "high";
+  stars: number;      // <--- required
   isFavorite: boolean;
-  price?: number;
-  link?: string;
-  isReserved?: boolean;
-  reservedBy?: string;
-  comments?: string;
+  isReserved: boolean;
+  price: number;
+  link: string;
+  comments: string;
 }
 
 interface WishCardProps {
@@ -50,26 +50,16 @@ export function WishCard({
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState(wish.comments || '');
 
-  const priorityConfig = {
-    low: { stars: 1, color: 'text-blue-500' },
-    medium: { stars: 2, color: 'text-amber-500' },
-    high: { stars: 3, color: 'text-rose-500' },
-  };
-
   const handleSaveComments = () => {
-    if (onUpdateComments) {
-      onUpdateComments(wish.id, comments);
-    }
+    if (onUpdateComments) onUpdateComments(wish.id, comments);
     setShowComments(false);
   };
 
   return (
     <>
       <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group bg-white/80 backdrop-blur-sm border-green-100">
-        {/* Image Section - Large and Prominent */}
         <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-green-50 to-amber-50">
           
-          {/* Overlay Controls */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="absolute top-3 right-3 flex gap-2">
               <button
@@ -87,7 +77,6 @@ export function WishCard({
               </button>
             </div>
             
-            {/* Quick Actions on Hover */}
             <div className="absolute bottom-3 left-3 right-3 flex gap-2">
               {!isGuestView && onEdit && (
                 <Button
@@ -112,22 +101,19 @@ export function WishCard({
             </div>
           </div>
 
-          {/* Priority Stars - Top Left */}
+          {/* Stars */}
           <div className="absolute top-3 left-3 flex gap-0.5 bg-white/90 backdrop-blur-md px-2 py-1 rounded-full">
             {Array.from({ length: 3 }).map((_, i) => (
               <Star
                 key={i}
                 className={`w-3.5 h-3.5 ${
-                  i < priorityConfig[wish.priority].stars
-                    ? priorityConfig[wish.priority].color
-                    : 'text-gray-300'
+                  i < wish.stars ? 'text-amber-500' : 'text-gray-300'
                 }`}
-                fill={i < priorityConfig[wish.priority].stars ? 'currentColor' : 'none'}
+                fill={i < wish.stars ? 'currentColor' : 'none'}
               />
             ))}
           </div>
 
-          {/* Reserved Badge */}
           {wish.isReserved && (
             <div className="absolute bottom-3 left-3">
               <Badge className="bg-green-600 text-white border-none">
@@ -138,21 +124,18 @@ export function WishCard({
           )}
         </div>
 
-        {/* Content Section */}
         <CardContent className="p-5 space-y-3">
           <div className="space-y-2">
             <h3 className="text-gray-900 line-clamp-1">{wish.title}</h3>
             <p className="text-gray-600 text-sm line-clamp-2">{wish.description}</p>
           </div>
 
-          {/* Price */}
           {wish.price && (
             <div className="flex items-center justify-between pt-2">
               <span className="text-green-700 font-semibold">{wish.price} kr</span>
             </div>
           )}
 
-          {/* Actions */}
           <div className="flex gap-2 pt-2">
             {isGuestView && onToggleReserve ? (
               <Button
@@ -197,7 +180,6 @@ export function WishCard({
         </CardContent>
       </Card>
 
-      {/* Comments Dialog */}
       <Dialog open={showComments} onOpenChange={setShowComments}>
         <DialogContent>
           <DialogHeader>

@@ -1,54 +1,70 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import Link from 'next/link'
+import { useState, useEffect } from "react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
-  const supabase = useSupabaseClient()
+  const supabase = useSupabaseClient();
+  const user = useUser();
+  const router = useRouter();
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      router.push("/main/wishlist");
+    }
+  }, [user, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    if (!supabase) {
+      setError("Supabase client not initialized");
+      setLoading(false);
+      return;
+    }
 
     const { error: loginError } = await supabase.auth.signInWithPassword({
       email,
       password,
-    })
+    });
 
     if (loginError) {
-      setError('Invalid email or password')
-      setLoading(false)
-      return
+      setError("Invalid email or password");
+      setLoading(false);
+      return;
     }
 
-    // Redirect manually on success
-    window.location.href = '/main/wishlist'
-  }
+    // Redirect on success
+    router.push("/main/wishlist");
+  };
 
   const handleGoogleLogin = async () => {
+    if (!supabase) return;
     await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider: "google",
       options: {
-        redirectTo: 'http://localhost:3000/main/wishlist',
-      }
-    })
-  }
+        redirectTo: `${window.location.origin}/main/wishlist`,
+      },
+    });
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <div className="bg-white p-10 rounded-xl shadow-md max-w-sm w-full">
-
         {/* Title */}
         <h1 className="text-2xl font-semibold text-center mb-6">Log in</h1>
 
-        {/* Error message */}
+        {/* Error */}
         {error && (
           <p className="text-red-600 text-sm mb-4 text-center">{error}</p>
         )}
@@ -84,7 +100,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
           >
-            {loading ? 'Logging in...' : 'Log in'}
+            {loading ? "Logging in..." : "Log in"}
           </button>
         </form>
 
@@ -100,18 +116,21 @@ export default function LoginPage() {
           onClick={handleGoogleLogin}
           className="w-full py-2 border border-gray-300 rounded-md flex items-center justify-center gap-2 hover:bg-gray-100 transition"
         >
-          <img src="https://www.svgrepo.com/show/355037/google.svg" className="h-5 w-5" />
+          <img
+            src="https://www.svgrepo.com/show/355037/google.svg"
+            className="h-5 w-5"
+          />
           Log in with Google
         </button>
 
         {/* Signup link */}
         <p className="text-center text-sm mt-6">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <Link href="/signup" className="text-blue-600 hover:underline">
             Create one here
           </Link>
         </p>
       </div>
     </div>
-  )
+  );
 }

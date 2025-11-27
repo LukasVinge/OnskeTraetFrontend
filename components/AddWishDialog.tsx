@@ -23,32 +23,21 @@ import {
   SelectValue,
 } from "./ui/select";
 
-interface Wish {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  imageUrl?: string;
-  priority: "low" | "medium" | "high";
-  isFavorite: boolean;
-  isReserved: boolean;
-  price: number;
-  link?: string;
-  comments?: string;
-}
-
 interface AddWishDialogProps {
-  onAddWish: (wish: Omit<Wish, "id" | "isFavorite" | "isReserved">) => void;
+  onAddWish: (wish: any) => void;
   categories: string[];
   defaultCategory?: string;
   wishListId: string;
+  userId: string;
 }
+
 
 export function AddWishDialog({
   onAddWish,
   categories,
   defaultCategory,
   wishListId,
+  userId,
 }: AddWishDialogProps) {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -72,8 +61,9 @@ export function AddWishDialog({
     const apiPayload = {
       wishId: crypto.randomUUID(),
       wishListId: wishListId,
+      userId: userId,
       wishName: title,
-      description,
+      description: description || "string",
       link: link || "string",
       reserved: false,
       priority: apiPriority,
@@ -82,6 +72,9 @@ export function AddWishDialog({
       currency: "DKK",
       image: imageUrl || "string",
     };
+
+    // ✅ Log the payload before posting
+    console.log("Posting wish to API:", apiPayload);
 
     try {
       const response = await fetch(
@@ -95,22 +88,13 @@ export function AddWishDialog({
 
       if (!response.ok) throw new Error(await response.text());
 
-      onAddWish({
-        title,
-        description,
-        category,
-        imageUrl: imageUrl || undefined,
-        priority,
-        price: price ? parseFloat(price) : 0,
-        link: link || undefined,
-        comments: undefined,
-      });
+      onAddWish(apiPayload);
 
       resetForm();
       setOpen(false);
     } catch (error) {
       console.error(error);
-      alert("Der skete en fejl. Tjek konsollen.");
+      alert("An error occurred while adding the wish. Check the console.");
     } finally {
       setIsSubmitting(false);
     }
@@ -152,7 +136,7 @@ export function AddWishDialog({
 
           <div className="flex-1 overflow-y-auto space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Titel</Label>
+              <Label htmlFor="title">Title</Label>
               <Input
                 id="title"
                 value={title}
@@ -220,7 +204,7 @@ export function AddWishDialog({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="price">Price (kr) (optional)</Label>
+                <Label htmlFor="price">Price (DKK)</Label>
                 <Input
                   id="price"
                   type="number"
@@ -234,7 +218,7 @@ export function AddWishDialog({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="link">Product Link (optional)</Label>
+                <Label htmlFor="link">Product Link</Label>
                 <Input
                   id="link"
                   type="url"
@@ -247,7 +231,7 @@ export function AddWishDialog({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="imageUrl">Image URL (optional)</Label>
+              <Label htmlFor="imageUrl">Image URL</Label>
               <Input
                 id="imageUrl"
                 type="url"

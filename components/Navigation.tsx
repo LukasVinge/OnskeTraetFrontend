@@ -1,30 +1,39 @@
 "use client";
 
-import { Home, Settings, TreePine } from "lucide-react";
-import { Button } from "./ui/button";
+import { Home, Settings, TreePine, List } from 'lucide-react'; // Added List
+import { Button } from './ui/button';
 import { usePathname, useRouter } from "next/navigation";
 
+// The props structure is kept simple, though the component handles navigation internally
 interface NavigationProps {
   currentPage: string;
-  onNavigate?: (page: string) => void; // optional if using router internally
+  onNavigate?: (page: string) => void; 
 }
 
 export function Navigation({ currentPage, onNavigate }: NavigationProps) {
   const router = useRouter();
-  const pathname = usePathname(); // current path
+  const pathname = usePathname();
 
   const navItems = [
-    { id: "wishlist", label: "My Wishes", icon: Home, path: "/wishlist" },
-    { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
+    // Updated navItems to match the desired display and use the router paths
+    { id: 'wishlists-overview', label: 'Wishlists', icon: List, path: '/main/wishlist' }, 
+    { id: 'wishlist', label: 'My Wishes', icon: Home, path: '/main/wishlist/current' }, 
+    { id: 'settings', label: 'Settings', icon: Settings, path: '/main/settings' },
   ];
+  
+  // Helper to ensure proper type inference for the navigation items
+  type NavItem = typeof navItems[0];
 
-  const handleClick = (item: typeof navItems[0]) => {
-    // If already on the page, do nothing
+  const handleClick = (item: NavItem) => {
+    // Prevent navigation if already on the same path
     if (pathname === item.path) return;
 
+    // Optional handler for parent component state updates
     if (onNavigate) {
       onNavigate(item.id);
     }
+    
+    // Perform Next.js navigation
     router.push(item.path);
   };
 
@@ -49,12 +58,13 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
               return (
                 <Button
                   key={item.id}
-                  variant={currentPage === item.id ? "default" : "ghost"}
+                  // Check against currentPage or pathname for active state
+                  variant={item.path === pathname || currentPage === item.id ? 'default' : 'ghost'} 
                   onClick={() => handleClick(item)}
                   className={
-                    currentPage === item.id
-                      ? "gap-2 bg-gradient-to-r from-green-600 to-green-700"
-                      : "gap-2"
+                    item.path === pathname || currentPage === item.id
+                      ? 'gap-2 bg-gradient-to-r from-green-600 to-green-700'
+                      : 'gap-2'
                   }
                 >
                   <Icon className="w-4 h-4" />

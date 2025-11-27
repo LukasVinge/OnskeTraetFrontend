@@ -1,10 +1,5 @@
-import './globals.css'
-import { SupabaseProvider } from './providers'
-
-export const metadata = {
-  title: 'Wishlist App',
-  description: 'A wishlist app with Supabase Auth',
-}
+import "./globals.css";
+import { SupabaseProvider } from "./providers";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,5 +8,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SupabaseProvider>{children}</SupabaseProvider>
       </body>
     </html>
-  )
+  );
 }
