@@ -65,7 +65,6 @@ export default function WishlistPage() {
   const [wishlists, setWishlists] = useState<Wishlist[]>([]);
   const [firstName, setFirstName] = useState<string>("");
 
-  // Fetch API Health first
   useEffect(() => {
     async function checkHealth() {
       try {
@@ -78,25 +77,18 @@ export default function WishlistPage() {
     checkHealth();
   }, []);
 
-  // Fetch wishlists and full user info
   useEffect(() => {
     if (!user) return;
 
     async function fetchData() {
       setLoading(true);
-
       try {
-        // Fetch full user info
         const userRes = await fetch(`${API_USER_URL}/${user?.id}`);
         if (!userRes.ok) throw new Error("Failed to fetch user info");
         const userData: FullUser = await userRes.json();
         setFirstName(userData.firstName);
-
-        // Save to localStorage
         localStorage.setItem("user", JSON.stringify(userData));
-        console.log("localStorage:", localStorage);
 
-        // Fetch wishlists
         const res = await fetch(`${API_BASE_URL}/user/${user?.id}`);
         if (!res.ok) throw new Error("Failed to fetch wishlists");
         const data = await res.json();
@@ -126,7 +118,6 @@ export default function WishlistPage() {
     fetchData();
   }, [user]);
 
-  // Redirect if not logged in
   useEffect(() => {
     if (user === null) router.push("/login");
   }, [user, router]);
@@ -168,7 +159,6 @@ export default function WishlistPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-amber-50 to-rose-50">
-      {/* Navigation */}
       <Navigation currentPage="wishlists-overview" onNavigate={() => {}} />
 
       <div className="container mx-auto px-4 py-12">
@@ -190,7 +180,6 @@ export default function WishlistPage() {
             </AddWishlistDialog>
           </div>
 
-          {/* Stats cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <Card className="border-none shadow-lg bg-gradient-to-br from-green-500 to-green-600 overflow-hidden text-white p-6">
               <div className="flex items-center justify-between">
@@ -214,7 +203,6 @@ export default function WishlistPage() {
           </div>
         </div>
 
-        {/* Wishlist cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {wishlists.map((wishlist, idx) => {
             const Icon = iconMap[wishlist.icon];
@@ -226,11 +214,11 @@ export default function WishlistPage() {
                 transition={{ delay: idx * 0.1 }}
               >
                 <Card
-                  className="border-none shadow-lg hover:shadow-2xl transition-all cursor-pointer group bg-white/80 backdrop-blur-sm"
+                  className="border-none shadow-lg hover:shadow-2xl transition-all cursor-pointer group bg-white/80 backdrop-blur-sm rounded-2xl"
                   onClick={() => handleSelectWishlist(wishlist.id)}
                 >
                   <CardContent className="p-0">
-                    <div className={`p-6 bg-gradient-to-r ${wishlist.color} text-white`}>
+                    <div className={`p-6 bg-gradient-to-r ${wishlist.color} text-white rounded-t-2xl`}>
                       <div className="flex items-start justify-between mb-4">
                         <div className="p-3 bg-white/20 backdrop-blur-sm rounded-2xl">
                           <Icon className="w-6 h-6" />
@@ -281,9 +269,8 @@ export default function WishlistPage() {
             );
           })}
 
-          {/* Add new wishlist card */}
           <AddWishlistDialog userId={user.id} onWishlistCreated={handleWishlistCreated}>
-            <Card className="border-2 border-dashed border-gray-300 shadow-lg hover:border-green-400 transition-all cursor-pointer group bg-white/50 backdrop-blur-sm h-full min-h-[320px]">
+            <Card className="border-2 border-dashed border-gray-300 shadow-lg hover:border-green-400 transition-all cursor-pointer group bg-white/50 backdrop-blur-sm h-full min-h-[320px] rounded-2xl">
               <CardContent className="flex flex-col items-center justify-center h-full text-center p-6">
                 <div className="p-4 bg-gradient-to-br from-green-100 to-green-200 rounded-full mb-4 group-hover:from-green-200 group-hover:to-green-300 transition-all">
                   <Plus className="w-8 h-8 text-green-700" />

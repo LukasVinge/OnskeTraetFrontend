@@ -59,13 +59,14 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-green-100 p-4 mb-8">
       <div className="flex flex-col sm:flex-row gap-4">
+
         {/* Search */}
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600" />
           <Input
             placeholder="Search wishes..."
             value={filters.search}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onChange={(e) =>
               onFiltersChange({ ...filters, search: e.target.value })
             }
             className="pl-9 border-green-200 focus:border-green-300"
@@ -86,8 +87,15 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-80" align="end">
+
+          {/* 🔥 FIXED: NOT SEE-THROUGH ANYMORE */}
+          <PopoverContent
+            className="w-80 bg-white border border-green-200 shadow-xl rounded-xl"
+            align="end"
+          >
             <div className="space-y-4">
+
+              {/* Priority */}
               <div>
                 <h4 className="mb-3 font-medium">Priority</h4>
                 <div className="space-y-2">
@@ -99,10 +107,7 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
                         onCheckedChange={() => handlePriorityToggle(priority)}
                         className="cursor-pointer data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
                       />
-                      <Label
-                        htmlFor={`priority-${priority}`}
-                        className="cursor-pointer capitalize"
-                      >
+                      <Label htmlFor={`priority-${priority}`} className="cursor-pointer capitalize">
                         {priority}
                       </Label>
                     </div>
@@ -110,11 +115,11 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
                 </div>
               </div>
 
+              {/* Price Range */}
               <div>
                 <h4 className="mb-3 font-medium">
                   Price Range: {filters.priceRange[0]} - {filters.priceRange[1]} kr
                 </h4>
-                {/* Her ændres farven på slideren */}
                 <Slider
                   min={0}
                   max={maxPrice}
@@ -125,6 +130,7 @@ export function FilterBar({ filters, onFiltersChange, maxPrice }: FilterBarProps
                 />
               </div>
 
+              {/* Favorites only */}
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="favorites-only"
